@@ -2,6 +2,7 @@
 #include <cmath>
 #include <stdexcept>
 #include "Matrix.hpp"
+#include "Regression.hpp"
 
 #define UNIT_TEST(condition, message) \
     do { \
@@ -45,7 +46,7 @@ bool testMatrixBounds() {
     Matrix m1(2,2);
     try {
         m1(2,0) = 4.2;
-        UNIT_TEST(false, "There should be std::out_of_order error!");
+        UNIT_TEST(false, "There should be std::out_of_range error!");
     }catch (const std::out_of_range& e) {
 
     }
@@ -67,12 +68,12 @@ bool testDot() {
     UNIT_TEST(std::abs(m1.dotColumns(0,1) - 1) <= EPSILON, "This operation should be 1!");
     UNIT_TEST(std::abs(m1.dotColumns(0, m2, 1) - 1) <= EPSILON, "This operation should be 1!");
     try {
-        m1.columnNormalization(2);
-        UNIT_TEST(false, "There should be std::out_of_order error!");
+        m1.dotColumns(2,2);
+        UNIT_TEST(false, "There should be std::out_of_range error!");
     }catch (const std::out_of_range& e) {}
     try {
-        m1.columnNormalization(-1);
-        UNIT_TEST(false, "There should be std::out_of_order error!");
+        m1.dotColumns(-1,0);
+        UNIT_TEST(false, "There should be std::out_of_range error!");
     }catch (const std::out_of_range& e) {}
     return true;
 }
@@ -90,12 +91,36 @@ bool testColumnNormalization() {
     UNIT_TEST(std::abs(m1.columnNormalization(1) - std::sqrt(10)) <= EPSILON, "This normalization should be sqrt(10)!");
     try {
         m1.columnNormalization(2);
-        UNIT_TEST(false, "There should be std::out_of_order error!");
+        UNIT_TEST(false, "There should be std::out_of_range error!");
     }catch (const std::out_of_range& e) {}
     try {
         m1.columnNormalization(-1);
-        UNIT_TEST(false, "There should be std::out_of_order error!");
+        UNIT_TEST(false, "There should be std::out_of_range error!");
     }catch (const std::out_of_range& e) {}
+    return true;
+}
+
+bool testRegression() {
+    Matrix m1(3,2);
+    m1(0,0) = 1.0;
+    m1(1,0) = 2.0;
+    m1(2,0) = 4.0;
+    m1(0,1) = -3.0;
+    m1(1,1) = 0.0;
+    m1(2,1) = 1.0;
+
+    QRDecomposition qr = calculate_QR(m1);
+    UNIT_TEST((std::abs(qr.m_Q(0,0) - 1/std::sqrt(21)) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_Q(1,0) - 2/std::sqrt(21)) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_Q(2,0) - 4/std::sqrt(21)) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_Q(0,1) + 64/std::sqrt(4389)) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_Q(1,1) + 2/std::sqrt(4389)) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_Q(2,1) - 17/std::sqrt(4389)) < EPSILON), "Wrong result!");
+
+    UNIT_TEST((std::abs(qr.m_R(0,0) - std::sqrt(21)) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_R(1,0) - 0) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_R(0,1) - 1/std::sqrt(21)) < EPSILON), "Wrong result!");
+    UNIT_TEST((std::abs(qr.m_R(1,1) - std::sqrt(4389)/21) < EPSILON), "Wrong result!");
     return true;
 }
 
@@ -117,6 +142,7 @@ void runAllTests() {
     runTest(testMatrixBounds, "Matrix Bounds");
     runTest(testDot, "Matrix Dot Operation");
     runTest(testColumnNormalization, "Column Normalization");
+    runTest(testRegression, "QR decomposition");
 
     std::cout << "Results: " << passed << " / " << total << "\n";
 }

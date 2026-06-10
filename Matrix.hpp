@@ -43,7 +43,7 @@ public:
         if (c1 >= m_Cols || c2 >= other.m_Cols)
             throw std::out_of_range("Cannot find columns with this index!");
         if (m_Rows != other.m_Rows)
-            throw std::logic_error("Cannot do this operation with Matrixes of differrent sizes!");
+            throw std::logic_error("Cannot do this operation with Matrix of different sizes!");
         double sum = 0.0;
         for (size_t r = 0; r < m_Rows; ++r)
             sum += (*this)(r, c1) *  other(r, c2);
@@ -55,4 +55,5 @@ public:
             throw std::out_of_range("Cannot find columns with this index!");
         return dotColumns(c1, *this, c2);
     }
+
 };

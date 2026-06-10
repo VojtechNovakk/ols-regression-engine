@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 2. Definice tvého programu (targetu)
-add_executable(cpp_cinema_predictor main.cpp Matrix.hpp
+add_executable(cpp_cinema_predictor main.cpp Matrix.hpp Regression.hpp
         test.cpp)
 
 # 3. Přidání kompilačních flagů pro tvůj program
