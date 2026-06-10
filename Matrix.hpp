@@ -56,4 +56,26 @@ public:
         return dotColumns(c1, *this, c2);
     }
 
+    Matrix transpose() const {
+        Matrix result(m_Cols, m_Rows);
+        for (size_t c = 0; c < m_Cols; ++c) {
+            for (size_t r = 0; r < m_Rows; ++r)
+                result(c,r) = (*this)(r,c);
+        }
+        return result;
+    }
+
+    Matrix operator*(const Matrix& other) const {
+        if (m_Cols != other.m_Rows)
+            throw std::logic_error("Matrix dimensions do not match for multiplication!");
+        Matrix result(m_Rows, other.m_Cols);
+
+        for (size_t i = 0; i < m_Rows; ++i) {
+            for (size_t k = 0; k < m_Cols; ++k) {
+                for (size_t j = 0; j < other.m_Cols; ++j)
+                    result(i,j) += (*this)(i, k) * other(k,j);
+            }
+        }
+        return result;
+    }
 };

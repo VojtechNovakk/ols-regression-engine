@@ -124,6 +124,55 @@ bool testRegression() {
     return true;
 }
 
+bool testTranspose() {
+    Matrix m1(3,2);
+    m1(0,0) = 1.0;
+    m1(1,0) = 2.0;
+    m1(2,0) = 4.0;
+    m1(0,1) = -3.0;
+    m1(1,1) = 0.0;
+    m1(2,1) = 1.0;
+
+    m1 = m1.transpose();
+    UNIT_TEST(m1.rows() == 2, "Number of rows should be 2!");
+    UNIT_TEST(m1.cols() == 3, "Number of cols should be 3!");
+    UNIT_TEST(std::abs(m1(0,0) - 1.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(m1(1,0) + 3.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(m1(0,1) - 2.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(m1(1,1) - 0.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(m1(0,2) - 4.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(m1(1,2) - 1.0) < EPSILON, "Value is incorrect!");
+    return true;
+}
+
+bool testMultiplication() {
+    Matrix m1(3,2);
+    m1(0,0) = 1.0;
+    m1(1,0) = 2.0;
+    m1(2,0) = 4.0;
+    m1(0,1) = -3.0;
+    m1(1,1) = 0.0;
+    m1(2,1) = 1.0;
+
+    Matrix m2(2,2);
+    m2(0,0) = 2.0;
+    m2(1,0) = 6.0;
+    m2(0,1) = -4.0;
+    m2(1,1) = 0.0;
+
+    Matrix result = m1 * m2;
+
+    UNIT_TEST(result.rows() == 3, "Number of rows should be 3!");
+    UNIT_TEST(result.cols() == 2, "Number of cols should be 2!");
+    UNIT_TEST(std::abs(result(0,0) + 16.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(result(1,0) - 4.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(result(2,0) - 14.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(result(0,1) + 4.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(result(1,1) + 8.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(result(2,1) + 16.0) < EPSILON, "Value is incorrect!");
+    return true;
+}
+
 void runAllTests() {
     std::cout << "Running tests!\n";
 
@@ -143,6 +192,8 @@ void runAllTests() {
     runTest(testDot, "Matrix Dot Operation");
     runTest(testColumnNormalization, "Column Normalization");
     runTest(testRegression, "QR decomposition");
+    runTest(testTranspose, "Matrix Transpose");
+    runTest(testMultiplication, "Matrix Multiplication");
 
     std::cout << "Results: " << passed << " / " << total << "\n";
 }
