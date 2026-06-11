@@ -173,6 +173,25 @@ bool testMultiplication() {
     return true;
 }
 
+bool testBackSubstitution() {
+    Matrix m1(3,3);
+    m1(0,0) = 2;
+    m1(0,1) = 1;
+    m1(0,2) = 4;
+    m1(1,1) = -3;
+    m1(1,2) = 1;
+    m1(2,2) = -1;
+    Matrix z(3, 1);
+    z(0,0) = 1;
+    z(1,0) = 1;
+    z(2,0) = 4;
+    Matrix result(backSubstitution(m1, z));
+    UNIT_TEST(std::abs(result(0,0) - 28.0/3.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(result(1,0) + 5.0/3.0) < EPSILON, "Value is incorrect!");
+    UNIT_TEST(std::abs(result(2,0) + 4.0) < EPSILON, "Value is incorrect!");
+    return true;
+}
+
 void runAllTests() {
     std::cout << "Running tests!\n";
 
@@ -194,6 +213,7 @@ void runAllTests() {
     runTest(testRegression, "QR decomposition");
     runTest(testTranspose, "Matrix Transpose");
     runTest(testMultiplication, "Matrix Multiplication");
+    runTest(testBackSubstitution, "Back Substitution");
 
     std::cout << "Results: " << passed << " / " << total << "\n";
 }

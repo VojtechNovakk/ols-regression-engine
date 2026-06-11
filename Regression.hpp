@@ -25,3 +25,14 @@ QRDecomposition calculate_QR(const Matrix& m) {
     }
     return qr;
 }
+
+Matrix backSubstitution(const Matrix& R, const Matrix& Z) {
+    Matrix result(R.rows(), 1);
+    for (size_t i = R.rows()-1; i < R.rows(); --i) {
+        double sum = Z(i, 0);
+        for (size_t j = i+1; j < R.rows(); ++j)
+            sum -= result(j, 0)*R(i,j);
+        result(i, 0) = sum / R(i,i);
+    }
+    return result;
+}
