@@ -8,7 +8,7 @@ struct QRDecomposition {
     QRDecomposition(Matrix q, Matrix r) : m_Q(q), m_R(r) {}
 };
 
-QRDecomposition calculate_QR(const Matrix& m) {
+inline QRDecomposition calculate_QR(const Matrix& m) {
     QRDecomposition qr(m, Matrix(m.cols(), m.cols()));
     Matrix& q = qr.m_Q;
     Matrix& r = qr.m_R;
@@ -26,7 +26,7 @@ QRDecomposition calculate_QR(const Matrix& m) {
     return qr;
 }
 
-Matrix backSubstitution(const Matrix& R, const Matrix& Z) {
+inline Matrix backSubstitution(const Matrix& R, const Matrix& Z) {
     Matrix result(R.rows(), 1);
     for (size_t i = R.rows()-1; i < R.rows(); --i) {
         double sum = Z(i, 0);
@@ -35,4 +35,9 @@ Matrix backSubstitution(const Matrix& R, const Matrix& Z) {
         result(i, 0) = sum / R(i,i);
     }
     return result;
+}
+
+inline Matrix trainModel(const Matrix& X, const Matrix& Y) {
+    QRDecomposition qr = calculate_QR(X);
+    return backSubstitution(qr.m_R, qr.m_Q.transpose()*Y);
 }

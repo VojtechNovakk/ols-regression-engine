@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include <stdexcept>
-#include "Matrix.hpp"
-#include "Regression.hpp"
+#include "../include/Matrix.hpp"
+#include "../include/Regression.hpp"
 
 #define UNIT_TEST(condition, message) \
     do { \
