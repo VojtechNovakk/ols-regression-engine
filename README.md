@@ -34,7 +34,7 @@ cmake ..
 make 
 
 # 4. Run the application
-./cinema_app 
+./cpp_cinema_predictor 
 ```
 ## 🎓 Acknowledgments
 The core mathematical logic and algorithms were implemented based on the knowledge acquired during the **Linear algebra (BI-LA1 / LA2) course** at the [Faculty of Information Technology, CTU in Prague](https://fit.cvut.cz/cs).
