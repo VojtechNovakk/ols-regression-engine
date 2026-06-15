@@ -4,6 +4,7 @@
 #include <cmath>
 #include <numbers>
 #include <algorithm>
+#include <sstream>
 #include "../include/Matrix.hpp"
 #include "../include/Regression.hpp"
 
