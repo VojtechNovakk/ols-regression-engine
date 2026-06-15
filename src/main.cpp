@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <cmath>
 #include <numbers>
+#include <algorithm>
 #include "../include/Matrix.hpp"
 #include "../include/Regression.hpp"
 
@@ -57,7 +58,7 @@ inline Dataset loadData(const std::string& filepath) {
 
 int main() {
     try {
-        Dataset data = loadData("data/movies1.csv");
+        Dataset data = loadData("../data/movies1.csv");
         std::cout << "Successfully loaded " << data.X.rows() << " movies from the database.\n\n";
 
         Matrix weights = trainModel(data.X, data.Y);
