@@ -59,11 +59,10 @@ inline Dataset loadData(const std::string& filepath) {
 
 int main() {
     try {
-        Dataset data = loadData("../data/movies1.csv");
-        std::cout << "Successfully loaded " << data.X.rows() << " movies from the database.\n\n";
+        Dataset data = loadData("../data/f1_matrix_data.csv");
+        std::cout << "Successfully loaded " << data.X.rows() << " information from the database.\n\n";
 
         Matrix weights = trainModel(data.X, data.Y);
-        // YT Views  Weather (1-5)  Sequel (1/0)  Week of year  Attendance
         double sum = 0;
         Matrix x_T = data.X.transpose();
         for (size_t i = 0; i < data.Y.rows(); ++i) {
@@ -74,16 +73,6 @@ int main() {
         double rmse = sqrt(sum / data.Y.rows());
         std::cout << "RMSE (Average Mismatch): " << rmse << "\n";
 
-        Matrix new_movie(data.X.cols(), 1);
-        new_movie(0, 0) = 1.0;
-        new_movie(1, 0) = 259000.0;
-        new_movie(2, 0) = 4.0;
-        new_movie(3, 0) = getSeasonality(16.0);
-        new_movie(4, 0) = 1.0;
-
-
-        double out = new_movie.dotColumns(0, weights, 0);
-        std::cout << "Estimated attendance at Czech movie theaters for the first weekend: " << out << " people!" << "\n";
     } catch (const std::exception& e) {
         std::cerr << "ERROR: " << e.what() << '\n';
     }
